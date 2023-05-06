@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
-    const int MAX = 50;
+    const int MAX = 11;
 
     Map[,] map = new Map[MAX, MAX];
     Map person, objetivo;
