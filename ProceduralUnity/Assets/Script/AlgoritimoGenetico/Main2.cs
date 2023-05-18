@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Main2 : MonoBehaviour
 {
@@ -9,14 +11,38 @@ public class Main2 : MonoBehaviour
     public Mesh mesh;
 
     private int tempo = 0;
-    private float MAX = 100;
+    private float MAX = 20;
+    public Text text;
 
     void Start()
     {
-
-        for(int i = 0; i<5; i++)
+        text.text = UnityEngine.Random.Range(0.1f,0.9f).ToString();
+        for(int i = 0; i<6; i++)
         {
-            animal.Add(new Animal(mesh,i,new Vector4(Random.Range(0.0f,1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.5f, 1.0f) )));
+            switch(i)
+            {
+                case 0:
+                    animal.Add(new Animal(mesh, i, new Vector4(Color.blue.a, Color.blue.g, Color.blue.b, 1)));
+                    break;
+                case 1:
+                    animal.Add(new Animal(mesh, i, new Vector4(0, 0, 0, 1)));
+                    break;
+                case 2:
+                    animal.Add(new Animal(mesh, i, new Vector4(Color.red.a, Color.red.g, Color.red.b, 1)));
+                    break;
+                case 3:
+                    animal.Add(new Animal(mesh, i, new Vector4(Color.yellow.a, Color.yellow.g, Color.yellow.b, 1)));
+                    break;
+                case 4:
+                    animal.Add(new Animal(mesh, i, new Vector4(Color.cyan.a, Color.cyan.g, Color.cyan.b, 1)));
+                    break;
+                case 5:
+                    animal.Add(new Animal(mesh, i, new Vector4(Color.gray.a, Color.gray.g, Color.gray.b, 1)));
+                    break;
+
+
+            }
+            
         }
         
     }
@@ -24,20 +50,53 @@ public class Main2 : MonoBehaviour
    
     void Update()
     {
-        if (animal.Count <= 100)
+        if (animal.Count >= 100)
         {
 
 
-            tempo++;
-            if (tempo >= MAX)
+            for (int i = 0; i < animal.Count/2; i++)
             {
-                tempo = 0;
+                if (float.Parse(text.text) > 0.5f)
+                {
+                    if ((animal[i].color.x + animal[i].color.y + animal[i].color.z) / 3 < float.Parse(text.text))
+                    {
+                        Destroy(animal[i].animalGO);
+                        animal.Remove(animal[i]);
 
-                Animal filho = new Animal(mesh, animal.Count, new Vector4(0, 0, 0, 1));
-                Randomiza(filho);
+                    }
+                }
+                else
+                {
+                    if ((animal[i].color.x + animal[i].color.y + animal[i].color.z) / 3 > float.Parse(text.text))
+                    {
+                        Destroy(animal[i].animalGO);
+                        animal.Remove(animal[i]);
 
-
+                    }
+                }
+                
             }
+
+
+        }
+        if(animal.Count >= 300)
+        {
+            for (int i = 0; i < animal.Count / 2; i++)
+            {
+                Destroy(animal[i].animalGO);
+                animal.Remove(animal[i]);
+            }
+        }
+
+        tempo++;
+        if (tempo >= MAX)
+        {
+            tempo = 0;
+
+            Animal filho = new Animal(mesh, animal.Count, new Vector4(0, 0, 0, 1));
+            Randomiza(filho);
+
+
         }
         for (int i = 0; i < animal.Count; i++)
         {
@@ -52,7 +111,7 @@ public class Main2 : MonoBehaviour
 
     public void Randomiza(Animal ani)
     {
-        Vector2 pai = new Vector2(Random.Range(0, animal.Count), Random.Range(0, animal.Count));
+        Vector2 pai = new Vector2(UnityEngine.Random.Range(0, animal.Count), UnityEngine.Random.Range(0, animal.Count));
         
 
         if (pai.x != pai.y)
@@ -75,9 +134,9 @@ public class Main2 : MonoBehaviour
     {
         Vector4 novaCor;
 
-        novaCor = new Vector4(ani1.color.x, ani1.color.y, ani2.color.z, ani2.color.w);
-        int r = Random.Range(0, 4);
-        int r2 = Random.Range(0, 2);
+        novaCor = new Vector4((ani1.color.x + ani2.color.x) /2, (ani1.color.y + ani2.color.y)/2,(ani1.color.z + ani2.color.z)/2, ani2.color.w);
+        int r = UnityEngine.Random.Range(0, 4);
+        int r2 = UnityEngine.Random.Range(0, 2);
         switch (r2)
         {
             case 0:
